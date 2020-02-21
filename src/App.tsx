@@ -1,20 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { TodosList, TodoForm } from './components';
-import { Todo } from './types';
+import { TodosList, TodoForm, Layout } from './components';
+import { TodoProvider } from './contexts';
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
-
-  function handleSubmit(todo: Todo): void {
-    setTodos([...todos, todo]);
-  }
-
   return (
-    <>
-      <TodosList todos={todos} />
-      <TodoForm onSubmit={handleSubmit} />
-    </>
+    <Layout>
+      <TodoProvider>
+        <TodosList />
+        <TodoForm />
+      </TodoProvider>
+    </Layout>
   );
 }
 

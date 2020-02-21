@@ -1,43 +1,75 @@
 import React, { useState } from 'react';
+import uuid from 'uuid';
+import styled from 'styled-components';
 
-import { Todo } from '../types';
+import { useTodoDispatch, Actions } from '../contexts';
+import { InputGroup, Label, Input, Button } from './styled';
+import { Modal } from './Modal';
+import { CircleButton } from './styled/forms/CircleButton';
+import { Colors } from '../contants/colors';
 
-interface IProps {
-  onSubmit: (todo: Todo) => void;
-}
-
-export function TodoForm({ onSubmit }: IProps) {
+export function TodoForm() {
   const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+  const [isModalOpen, setModalOpen] = useState(false);
+  const dispatch = useTodoDispatch();
+
+  function handleModalOpen() {
+    setModalOpen(true);
+  }
+
+  function handleModalClose() {
+    setModalOpen(false);
+  }
 
   function handleSubmit(e: React.ChangeEvent<HTMLFormElement>): void {
     e.preventDefault();
-    onSubmit({
+    const todo = {
       title,
-      body,
-      isDone: false
+      isDone: false,
+      id: uuid()
+    };
+    setModalOpen(false);
+    setTitle('');
+    dispatch!({
+      type: Actions.addTodo,
+      payload: todo
     });
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="title">Title</label>
-      <input
-        value={title}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-          setTitle(e.target.value)
-        }
-        id="title"
-      />
-      <label htmlFor="body">Body</label>
-      <input
-        onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-          setBody(e.target.value)
-        }
-        value={body}
-        id="body"
-      />
-      <button type="submit">Add todo</button>
-    </form>
+    <>
+      <Modal onClose={handleModalClose} isOpen={isModalOpen}>
+        <Form onSubmit={handleSubmit}>
+          <InputGroup>
+            <Input
+              value={title}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
+                setTitle(e.target.value)
+              }
+              id="title"
+              placeholder=" "
+              required
+            />
+            <Label htmlFor="title">Title</Label>
+          </InputGroup>
+          <Button type="submit">Add todo</Button>
+        </Form>
+      </Modal>
+      {!isModalOpen && <Plus onClick={handleModalOpen} />}
+    </>
   );
 }
+
+const Plus = styled(CircleButton)`
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+`;
+
+const Form = styled.form`
+  padding: 40px;
+  border: 2px solid #f2f2f2;
+  background: ${Colors.white};
+  text-align: center;
+`;
