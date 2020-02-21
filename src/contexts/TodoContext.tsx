@@ -67,7 +67,7 @@ function todoReducer(state: State, action: Action) {
 function TodoProvider({ children }: TodoProviderProps) {
   const [state, dispatch] = useReducer(
     todoReducer,
-    JSON.parse(window.localStorage.getItem('todos')!)
+    JSON.parse(window.localStorage.getItem('todos')!) || []
   );
 
   return (
