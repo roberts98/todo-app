@@ -59,7 +59,7 @@ const Close = styled.span`
     content: '';
     width: 2px;
     height: 20px;
-    background-color: ${Colors.white};
+    background-color: ${Colors.dark};
     position: absolute;
     right: 20px;
     top: 10px;
