@@ -23,17 +23,19 @@ export function TodoForm() {
 
   function handleSubmit(e: React.ChangeEvent<HTMLFormElement>): void {
     e.preventDefault();
-    const todo = {
-      title,
-      isDone: false,
-      id: uuid()
-    };
-    setModalOpen(false);
-    setTitle('');
-    dispatch!({
-      type: Actions.addTodo,
-      payload: todo
-    });
+    if (title) {
+      const todo = {
+        title,
+        isDone: false,
+        id: uuid()
+      };
+      setModalOpen(false);
+      setTitle('');
+      dispatch!({
+        type: Actions.addTodo,
+        payload: todo
+      });
+    }
   }
 
   return (
