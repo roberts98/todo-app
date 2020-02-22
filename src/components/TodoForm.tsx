@@ -39,7 +39,7 @@ export function TodoForm() {
   return (
     <>
       <Modal onClose={handleModalClose} isOpen={isModalOpen}>
-        <Form onSubmit={handleSubmit}>
+        <Form data-testid="form" onSubmit={handleSubmit}>
           <InputGroup>
             <Input
               value={title}
@@ -55,7 +55,9 @@ export function TodoForm() {
           <Button type="submit">Add todo</Button>
         </Form>
       </Modal>
-      {!isModalOpen && <Plus onClick={handleModalOpen} />}
+      {!isModalOpen && (
+        <Plus data-testid="plus-icon" onClick={handleModalOpen} />
+      )}
     </>
   );
 }
